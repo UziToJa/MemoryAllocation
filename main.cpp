@@ -1,6 +1,6 @@
 #include <iostream>
 #include "array.h"
-#define SIZE 10
+
 
 void menu(){
     printf("Select an option:\n");
@@ -11,17 +11,18 @@ void menu(){
     printf("5. Determine the average value\n");
     printf("6. Save to file\n");
     printf("7. Restore from file\n");
+    printf("8. Delete the value from array\n");
     printf("0. Exit\n");
     printf("Select an option: \n\n");
 }
 
 int main() {
-    int array[SIZE] = {1,2,3,4,5,6,7,8,9,10};
-
+    int *array = NULL;
+    int size=0;
     printf("Simple array\n\n");
 
     int option = 0;
-    float average = calculateAverege(array);
+    float average = calculateAverege(array, size);
 
     do{
         menu();
@@ -31,18 +32,18 @@ int main() {
                 break;
             case 1 :
                 printf("Entering the values into array\n\n");
-                enterDataIntoArray(array);
+                array = enterDataIntoArray(array, &size);
                 break;
             case 2 :
-                displayArray(array);
+                displayArray(array, size);
                 break;
             case 3 : {
-                int min = findMinimumValue(array);
+                int min = findMinimumValue(array, size);
                 printf("Minimum value = %d\n", min);
                 break;
             }
             case 4 : {
-                int max = findMaximumValue(array);
+                int max = findMaximumValue(array, size);
                 printf("Maximum value = %d\n", max);
                 break;
             }
@@ -51,14 +52,17 @@ int main() {
                 break;
             case 6:
                 printf("Saving data to the file\n\n");
-                if (!saveArrayToFile(array)){
+                if (!saveArrayToFile(array,size)){
                     printf("Array saved to the file\n\n");
                 } else {
                     printf("Something went wrong...\n\n");
                 }
                 break;
             case 7 :
-                displayFromFile(array);
+                displayFromFile(array,size);
+                break;
+            case 8 :
+                deleteValues(array,&size);
                 break;
             default:
                 printf("Pick the right number\n");
@@ -66,5 +70,6 @@ int main() {
     }
     while(option !=0);
     printf("THE END\n");
+    free(array);
     return 0;
 }
